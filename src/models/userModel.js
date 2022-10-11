@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: true
     }, // s3 link
-    phone: {type: String, 
+    phone: {
+        type: String, 
         required: true,
         unique: true,
         trim: true
@@ -31,8 +32,6 @@ const userSchema = new mongoose.Schema({
         required: true
     }, // encrypted password
     address: { 
-        type: String,
-        required: true,
       shipping: {
         street: {
             type: String, 
@@ -71,4 +70,4 @@ const userSchema = new mongoose.Schema({
 },
 {timestamps: true}  )
 
-    module.exports = mongoose.model("User",userSchema)
+module.exports = mongoose.model("User",userSchema)
