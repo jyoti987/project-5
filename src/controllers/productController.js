@@ -1,7 +1,7 @@
 const productModel = require("../models/productModel")
 const { uploadFile } = require("../aws/aws")
 const mongoose = require('mongoose')
-const { isValid, isValidNumber, isValidObjectId, isValidRequestBody, isValidTitle, isValidPrice, isValidStyle } = require("../validators/productValidation")
+const { isValid, isValidObjectId, isValidRequestBody, isValidTitle, isValidPrice, isValidStyle } = require("../validators/productValidation")
 
 
 const createProduct = async function (req, res) {
@@ -31,7 +31,6 @@ const createProduct = async function (req, res) {
 
         //price
         if (!price) return res.status(400).send({ status: false, message: "Please enter price" })
-        //if (!isValidNumber(price.trim())) return res.status(400).send({ status: false, message: "Please enter price in correct format" })
         if(!isValidPrice(price.trim())) return res.status(400).send({ status: false, message: "Enter a proper price" })
 
         //currencyID
@@ -40,6 +39,11 @@ const createProduct = async function (req, res) {
         if (!isValid(currencyId)) return res.status(400).send({ status: false, message: "Please enter currency in correct format" })
         if(currencyId != 'INR') return res.status(400).send({ status: false, message: "currencyId invalid" })
 
+        //currencyFormat
+        if (!currencyFormat) return res.status(400).send({ status: false, message: "Please enter currencyFormat" })
+        if (!isValid(currencyFormat)) return res.status(400).send({ status: false, message: "Please enter currencyFormat in correct format" })
+        if (currencyFormat != '₹') return res.status(400).send({ status: false, message: "Please enter a valid currencyFormat" })
+        product.currencyFormat = currencyFormat;
 
         //productImage
         if (files.length == 0) return res.status(400).send({ status: false, message: "Please provide product image file!!" })
@@ -54,24 +58,19 @@ const createProduct = async function (req, res) {
                     return res.status(400).send({ status: false, message: "Please Enter valid sizes, it should include only sizes from  (S,XS,M,X,L,XXL,XL) " })
             }
         }
-    
+
 
         let product = {
             title: title,
             description: description,
             price: price,
             currencyId: currencyId,
+            currencyFormat: currencyFormat,
             productImage: uploadImage,
             availableSizes: sizeList,
             deletedAt: null
         }
 
-        //currencyFormat
-        if (currencyFormat) {
-            if (!isValid(currencyFormat)) return res.status(400).send({ status: false, message: "Please enter currencyFormat in correct format" })
-            if (currencyFormat != '₹') return res.status(400).send({ status: false, message: "Please enter a valid currencyFormat" })
-            product.currencyFormat = currencyFormat;
-        }
 
         //isFreeShipping
         if (isFreeShipping) {
