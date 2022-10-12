@@ -26,7 +26,7 @@ const isValidPass = function (value) {
 }
 
 const isValidStreet = function (value) {
-    return (/^[\s]*[a-zA-Z-0-9,]+([\s]?[a-zA-Z-0-9]+)*[\s]*$/).test(value)
+    return (/^[\s]*[a-zA-Z-0-9,. ]+([\s]?[a-zA-Z-0-9]+)*[\s]*$/).test(value)
        
 }
 
@@ -45,11 +45,10 @@ const isValidRequestBody = function (value) {
 
 
 const isValid=function(value){
-    if (typeof value === "undefined" || value === null || value == " ")
-        return false;
-    if (typeof value === "string" && value.trim().length > 0)
-        return true;
-    return false;
+    if (typeof value === "undefined" || typeof value === "null") return true;
+  if (typeof value === "string" && value.trim().length === 0) return true;
+  if (typeof value === "object" && Object.keys(value).length === 0) return true;
+  return false;
 
 }
 module.exports = { isValid,isValidObjectId, isValidRequestBody, isValidEmail, isValidName, isValidPass, isValidPhone, isValidStreet, isValidPincode }
