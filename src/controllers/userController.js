@@ -169,11 +169,11 @@ const createUser = async function (req, res) {
 
 
         const user = await userModel.create(reqBody);
-        console.log(user)
+        //console.log(user)
         return res.status(201)
             .send({ status: true, message: "User is created Sucessfully", data: user })
     } catch (err) {
-        console.log(err.message)
+        return res.status(500).send(err.message);
     }
 }
 
@@ -204,7 +204,7 @@ const loginUser = async function (req, res) {
 
 
         const matchPassword = await bcrypt.compare(password, user.password);
-console.log(matchPassword)
+        //console.log(matchPassword)
         if (!matchPassword) return res.status(401).send({ status: false, message: "Invalid password" });
 
 
@@ -228,7 +228,7 @@ console.log(matchPassword)
     }
 }
 
-
+////==========================================================Update User Profile===============================================
 const updateUser = async function (req, res) {
     try {
         let data = req.body
@@ -294,6 +294,8 @@ if(profileImage){
         // ==========================Address validation================================
 if(address){
         if (!isValid(address)) return res.status(400).send({ status: false, message: "please write address in correct way" })
+
+        
 
         // =====================shipping address======================
         if (shipping) {

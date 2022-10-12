@@ -19,7 +19,7 @@ const isValidPhone = function (value) {
 }
 const isValidPass = function (value) {
    if(value.match(/^[a-zA-Z0-9!@#$%^&*]{8,15}$/))
-   return true
+    return true
    return false
        
 }
