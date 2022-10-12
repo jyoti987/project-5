@@ -83,21 +83,20 @@ const createUser = async function (req, res) {
             return res.status(400)
                 .send({ status: false, message: "This phone number is Already Used !" })
 
+// Validation of address
 
-        // if (!address || isValid(reqBody.address))
-        //     return res.status(400)
-        //         .send({ status: false, message: "address is required" });
-
-        // reqBody.address=JSON.parse(reqBody.address);
-
-        const { shipping, billing } = reqBody.address;
-
-        if (reqBody.address && typeof reqBody.address != "object")
-            return res.status(400)
-                .send({ status: false, message: "Type of address must be object " });
+if(!address)
+return res.status(400).send({ status: false, message: "Address is required" });
 
 
+// _____________If data pass in the json format in the req______________________
+reqBody.address = JSON.parse(address);
+if (reqBody.address && typeof reqBody.address != "object") {
+return res.status(400).send({ status: false, message: "Address is in wrong format" })
+};
+// ______________________________________________________________________________
 
+const { shipping, billing } = reqBody.address;
 
         if (shipping) {
             const { street, city, pincode } = shipping;
@@ -165,9 +164,10 @@ const createUser = async function (req, res) {
         } else {
             return res.status(400).send({ status: false, message: "billing is required" })
         }
-
-
-        const user = await userModel.create(reqBody);
+    
+       
+    const obj = JSON.parse(JSON.stringify(reqBody));
+        const user = await userModel.create(obj);
         //console.log(user)
         return res.status(201)
             .send({ status: true, message: "User is created Sucessfully", data: user })
@@ -232,11 +232,11 @@ const loginUser = async function (req, res) {
 const getUserDetails = async function (req, res) {
     try {
         let userId = req.params.userId
-
-        if (!isValidObjectId(userId)) {
+ if(!userId) return res.status.send({status:false,message:"Please Provide userId in the path params"})
+        if (!isValidObjectId(userId)) 
             return res.status(400)
                 .send({ status: false, message: "UserId  Invalid" })
-        }
+        
         let userData = await userModel.findById({ _id: userId })
 
         if (!userData) return res.status(404)
@@ -249,21 +249,23 @@ const getUserDetails = async function (req, res) {
     }
 }
 
-//==================================================================Update User Profile===============================================
+//=================================================Update User Profile===============================================
 const updateUser = async function (req, res) {
     try {
         let data = req.body
         let userId = req.params.userId
         let files = req.files
-
-        let Users = await userModel.findOne({ _id: userId })
-
-        if (!Users) { return res.status(404).send({ status: false, message: "No User Found" }) }
+ // userId validation
+        if(!userId) return res.status(400).send({status:false,message:"Please Provide userId in the path Params"})
+        if(!isValidObjectId(userId)) return res.status(400).send({status:false,message:"UserId is not valid"})
+       
+    // finding user with given userId
+        let user = await userModel.findOne({ _id: userId })
+        if (!user)  return res.status(404).send({ status: false, message: "No User Found" }) 
 
         if(!isValidRequestBody(data)) return res.status(400).send({status:false,message:"Please provide data in the request body"})
         let { fname, lname, email, phone, profileImage, password,address} = data
 
-        if (!Object.keys(data).length) return res.status(400).send({ status: false, message: "Body should not be empty" })
 
         // ==================================validation for userProfile==================================
 if(fname){
@@ -314,10 +316,11 @@ if(profileImage){
 
         // ==========================Address validation================================
 if(address){
-        if (!isValid(address)) return res.status(400).send({ status: false, message: "please write address in correct way" })
-
-        
-
+    data.address = JSON.parse(address);
+    if (data.address && typeof data.address != "object") 
+    return res.status(400).send({ status: false, message: "Address is in wrong format" })
+   
+    const {shipping,billing}=address
         // =====================shipping address======================
         if (shipping) {
             const { street, city, pincode } = shipping;
