@@ -1,4 +1,4 @@
-//__________________________Importing all the packages/files here_______________________
+//===============================================Importing all the packages/files here===============================================
 
 const userModel = require("../models/userModel");
 const { uploadFile } = require("../aws/aws")
@@ -6,8 +6,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const { isValid,isValidRequestBody, isValidObjectId, isValidEmail, isValidName, isValidPass, isValidPhone, isValidStreet, isValidPincode } = require("../validators/validator")
 
-//__________________________________CREATE USER___________________________________________
-
+//=====================================================CREATE USER===================================================================
 
 const createUser = async function (req, res) {
     try {
@@ -180,7 +179,7 @@ const createUser = async function (req, res) {
 
 
 
-//================================================POST /login====================================================================
+//==========================================================Login====================================================================
 
 const loginUser = async function (req, res) {
     try {
@@ -228,7 +227,29 @@ const loginUser = async function (req, res) {
     }
 }
 
-////==========================================================Update User Profile===============================================
+//===============================================================Get User============================================================
+
+const getUserDetails = async function (req, res) {
+    try {
+        let userId = req.params.userId
+
+        if (!isValidObjectId(userId)) {
+            return res.status(400)
+                .send({ status: false, message: "UserId  Invalid" })
+        }
+        let userData = await userModel.findById({ _id: userId })
+
+        if (!userData) return res.status(404)
+            .send({ status: false, message: 'User Data Not Found' })
+
+        return res.status(200).send({ status: true, message: 'User profile details', data: userData })
+    }
+    catch (err) {
+        return res.status(500).send({ status: false, message: err.message })
+    }
+}
+
+//==================================================================Update User Profile===============================================
 const updateUser = async function (req, res) {
     try {
         let data = req.body
@@ -364,4 +385,4 @@ if(address){
 
 
 
-module.exports = { createUser, loginUser,updateUser };
+module.exports = { createUser, loginUser, getUserDetails, updateUser };
