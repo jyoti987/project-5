@@ -139,15 +139,16 @@ const getProductDetails = async function (req, res) {
                     return res.status(400).send({ status: false, message: `size should be one from these only ${givenSizes}` })
 
                 } else {
-                    
-                    filter.availableSizes = { $in: size }
+                    size=size.split(",")
+                    filter['availableSizes'] = {$in:size}
+                   
 
                 }
             }
             // validation for name
             if (name) {
     
-                filter.title = { $regex: name }; // check the substring
+                filter['title'] = { $regex: name }; // check the substring
             };
 
             // validation for price

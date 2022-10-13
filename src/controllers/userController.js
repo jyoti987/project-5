@@ -96,7 +96,7 @@ return res.status(400).send({ status: false, message: "Address is required" });
 // }
 reqBody.address = JSON.parse(address);
 if (reqBody.address && typeof reqBody.address != "object" ) {
-return res.status(400).send({ status: false, message: "Address is in wrong format" })
+return res.status(400).send({ status: false, message: "Address is not in object" })
 };
 // reqBody.address = JSON.parse(address);
 // ______________________________________________________________________________
