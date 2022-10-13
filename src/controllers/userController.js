@@ -90,10 +90,15 @@ return res.status(400).send({ status: false, message: "Address is required" });
 
 
 // _____________If data pass in the json format in the req______________________
+// 
+// if(typeof address==="string"){
+//     return res.status(400).send({ status: false, message: "Address is in wrong format" })
+// }
 reqBody.address = JSON.parse(address);
-if (reqBody.address && typeof reqBody.address != "object") {
+if (reqBody.address && typeof reqBody.address != "object" ) {
 return res.status(400).send({ status: false, message: "Address is in wrong format" })
 };
+// reqBody.address = JSON.parse(address);
 // ______________________________________________________________________________
 
 const { shipping, billing } = reqBody.address;
