@@ -15,19 +15,12 @@ router.post("/products", createProduct)
 router.get("/products",getProductDetails)
 router.get("/products/:productId",getProductDetailsById)
 router.put("/products/:productId",productUpdate)
-
 router.delete("/products/:productId",deleteProductById)
-module.exports={router}
 
 
 
 
 
 
-
-
-
-router.all("/*", function (req, res) {
-    res.status(400).send({status: false,message: "The api you request is not available"})
-})
-module.exports = router;
+module.exports=router
+ 
