@@ -246,7 +246,9 @@ Get product(s) details in response body.
 Response format
 On success - Return HTTP status 201. Also return the cart document. The response should be a JSON object like this
 On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object like this
+
 PUT /users/:userId/cart (Remove product / Reduce a product's quantity from the cart)
+
 Updates a cart by either decrementing the quantity of a product by 1 or deleting a product from the cart.
 Get cart id in request body.
 Get productId in request body.
@@ -260,7 +262,9 @@ Check if the productId exists and is not deleted before updating the cart.
 Response format
 On success - Return HTTP status 200. Also return the updated cart document. The response should be a JSON object like this
 On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object like this
+
 GET /users/:userId/cart
+
 Returns cart summary of the user.
 Make sure that cart exist.
 Make sure the userId in params and in JWT token match.

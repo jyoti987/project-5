@@ -6,9 +6,12 @@ const { AppConfig } = require('aws-sdk');
 
 const app = express();
 
+// to parse json data from request object
 app.use(express.json());
+
 app.use(multer().any());
 
+// connect to database
 mongoose.connect("mongodb+srv://ShailyTripathi:ShailyCompass2125@shailytripathi.ifjbsp5.mongodb.net/group24Database?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })

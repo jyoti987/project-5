@@ -1,9 +1,5 @@
 const mongoose = require('mongoose')
 
-const isValidTitle = function (value) {
-    return (/^[a-zA-Z][a-zA-Z0-9 $!-_#@%&\.]+$/).test(value)  
-       
-}
 
 const isValidPrice = function (value) {
     return (/^\d*\.?\d*$/).test(value)        
@@ -43,6 +39,10 @@ const isValidSizes=function(size){
        return true
        
    }
+   const isValidImage = function (value) {
+    return (/\.(jpe?g|png|jpg)$/).test(value);
+
+}
 
 
-module.exports = {isValidSizes, isValid, isValidObjectId, isValidRequestBody, isValidTitle, isValidPrice, isValidStyle }
+module.exports = {isValidImage,isValidSizes, isValid, isValidObjectId, isValidRequestBody,  isValidPrice, isValidStyle }

@@ -7,7 +7,7 @@ const router = express.Router();
 //==========Feature I --> User===================
 router.post("/register",createUser)
 router.post("/login",loginUser)
-router.get("/user/:userId/profile",authentication, authorization, getUserDetails)
+router.get("/user/:userId/profile",authentication, getUserDetails)
 router.put("/user/:userId/profile",authentication, authorization, updateUser)
 
 //==========Feature II --> Product===================
