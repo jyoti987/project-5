@@ -2,7 +2,7 @@ const userModel = require("../models/userModel");
 const productModel = require("../models/productModel")
 const cartModel = require('../models/cartModel');
 const { isValidObjectId } = require("mongoose");
-const {isValid,  isValidRequestBody} = require("../validators/productValidation")
+const { isValidRequestBody} = require("../validators/productValidation")
 
 const createCart = async function (req, res) {
     try {
@@ -13,7 +13,7 @@ const createCart = async function (req, res) {
         let { cartId, productId } = requestBody;
 
         if (!isValidObjectId(productId)) return res.status(400)
-            .send({ status: false, message: "Invalide Product Id" })
+            .send({ status: false, message: "Invalid Product Id" })
 
         const productById = await productModel.findById(productId)
 
@@ -60,7 +60,7 @@ const createCart = async function (req, res) {
         if (userCart.items.length === 0) {
             const addedProduct = {
                 productId: productById,
-                quantity: { $inc: +1 }
+                quantity: { $inc: 1 }
             }
 
             const newItemInCart = await cartModel.findOneAndUpdate({ userId: userIdFromParam }, { $set: { items: [addedProduct] } },
@@ -134,7 +134,7 @@ const updateCart = async function(req, res){
 
         if (!isValidObjectId(cartId)) return res.status(400).send({ status: false, message: " enter a valid cartId " })
 
-        let findCart = await cartModel.findById( cartId )
+        let findCart = await cartModel.findOne({ _id: cartId, isDeleted: false })
 
         if (!findCart) return res.status(404).send({ status: false, message: " cart not found" })
 
@@ -147,9 +147,6 @@ const updateCart = async function(req, res){
         let findProduct = await productModel.findOne({ _id: productId, isDeleted: false })
 
         if (!findProduct) return res.status(404).send({ status: false, message: " product does not exists" })
-
-        //if (!isValid(removeProduct)) return res.status(400).send({ status: false, message: " plz provide removeProduct " })
-
               
         if(typeof removeProduct != "number") return res.status(400).send({ status: false, message: " invalid type of removeProduct field" })
 
