@@ -5,12 +5,12 @@ const userModel = require('../models/userModel')
 
 //*************************************************AUTHENTICATION*********************************************************************
 const authentication = function (req, res, next) {
-    
+
     try {
         let token
         const secretKey = "functionup-group24-secretKey"
 
-        if (req.headers.authorization) {  
+        if (req.headers.authorization) {
             token = req.headers.authorization.split(' ')[1];
         }
 
@@ -54,8 +54,8 @@ const authorization = async function (req, res, next) {
 
         const userId = req.params.userId;
         const decodedToken = req.userId;
-     
-        if (mongoose.Types.ObjectId.isValid(userId) == false)
+
+        if (!mongoose.isValidObjectId(userId))
             return res.status(400)
                 .send({ status: false, message: "userId is not valid" })
 
