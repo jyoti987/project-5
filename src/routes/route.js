@@ -20,7 +20,7 @@ router.delete("/products/:productId",deleteProductById)
 
 //==========Feature III --> Product===================
 router.post('/users/:userId/cart',createCart)
-router.put('/users/:userId/cart',authentication,updateCart)
+router.put('/users/:userId/cart',updateCart)
 
 
 
