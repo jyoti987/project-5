@@ -13,8 +13,6 @@ const { json } = require("express");
 const createUser = async function (req, res) {
     try {
         const reqBody = req.body;
-        let objj=(JSON.parse(JSON.stringify(reqBody.address)))
-        console.log(objj)
 
         // request Body validation
         if (!isValidRequestBody(reqBody))
