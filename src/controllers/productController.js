@@ -460,7 +460,7 @@ const deleteProductById = async function (req, res) {
 
         let product = await productModel.findOne({ _id: productId })
 
-        if(product.isDeleted==="true")
+        if(product.isDeleted==true)
         return res.status(400).send({ status: true, message: "Product is already deleted" })
 
         if (!product)
