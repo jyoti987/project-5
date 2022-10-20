@@ -1,5 +1,4 @@
 const { isValidObjectId } = require('mongoose')
-// const { aggregate } = require('../models/cartModel')
 const userModel = require("../models/userModel");
 const cartModel = require('../models/cartModel')
 const orderModel = require('../models/orderModel')
@@ -93,10 +92,7 @@ const updateOrderDetails = async function (req, res) {
 
         if (!isValidObjectId(paramsUserId))
             return res.status(400).send({ status: false, message: "userId is not valid" });
-
-        if (req.userId != paramsUserId)
-            return res.status(403).send({ status: false, message: " authorization failed" });
-
+            
         const findUser = await userModel.findById(paramsUserId)
         if (!findUser)
             return res.status(400).send({ status: false, message: "User is not exist with given userId" });
