@@ -17,10 +17,9 @@ const orderSchema = new mongoose.Schema({
     cancellable: { type: Boolean, default: true },
     status: { type: String, default: 'pending', enum: ["pending", "completed", "cancled"] },
     deletedAt: { type: Date },
-    isDeleted: { type: Boolean, default: false },
-},
-    { timestamp: true },
-)
+    isDeleted: { type: Boolean, default: false }
+
+}, { timestamps: true })
 
 
 module.exports = mongoose.model("Order", orderSchema);
