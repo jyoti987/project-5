@@ -15,20 +15,12 @@ const createOrder = async function (req, res) {
             return res.status(400)
                 .send({ status: false, message: "request Body cant be emp" })
 
-        if (!isValidObjectId(userId))
-            return res.status(400)
-                .send({ status: false, message: "Enter Valid UserId" })
-
         if (!isValidObjectId(cartId))
             return res.status(400)
                 .send({ status: false, message: "cart Id is not valid " })
 
-        // if (req.userId !== userId)
-        //     return res.status(403)
-        //         .send({ status: false, message: "user is not authorised" })
-
         let findUserCart = await cartModel.findOne({ userId: userId }).select({ createdAt: 0, updatedAt: 0, __v: 0 }).lean()
-        
+
         if (!findUserCart)
             return res.status(404)
                 .send({ status: false, message: "Requested User Cart Not found" })
