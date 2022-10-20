@@ -33,6 +33,7 @@ const createProduct = async function (req, res) {
         // const findTitle = await productModel.findOne({ title: title, isDeleted: false })
 
         data.title=title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+
         let findTitle = await productModel.findOne({ title: data.title })
 
         if (findTitle)
@@ -97,7 +98,7 @@ const createProduct = async function (req, res) {
 
 
         let product = {
-            title: title,
+            title: data.title,
             description: description,
             price: price,
             currencyId: currencyId,
