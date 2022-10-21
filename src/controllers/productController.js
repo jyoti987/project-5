@@ -97,7 +97,7 @@ const createProduct = async function (req, res) {
 
 
         let product = {
-            title: title,
+            title: data.title,
             description: description,
             price: price,
             currencyId: currencyId,
