@@ -32,7 +32,7 @@ const createProduct = async function (req, res) {
 
         // const findTitle = await productModel.findOne({ title: title, isDeleted: false })
 
-        data.title=title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+        data.title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
 
         let findTitle = await productModel.findOne({ title: data.title })
 
@@ -188,13 +188,13 @@ const getProductDetails = async function (req, res) {
 
                 } else {
                     size = size.split(",")
-                  
-                    filter={availableSizes:{$in:size}}
+
+                    filter = { availableSizes: { $in: size } }
                 }
             }
             // validation for name
             if (name) {
-               name=name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
                 filter['title'] = { $regex: name }; // check the substring
             };
 
@@ -308,10 +308,13 @@ const productUpdate = async function (req, res) {
                 return res.status(400)
                     .send({ status: false, message: "Please enter title in correct format" })
 
-            let findTitle = await productModel.findOne({ title: title })
+            updateData.title = title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+
+            let findTitle = await productModel.findOne({ title: updateData.title })
             if (findTitle)
                 return res.status(400)
                     .send({ status: false, message: "This Title Is Alredy Used" })
+                    
         }
 
         //validation of description
@@ -344,7 +347,7 @@ const productUpdate = async function (req, res) {
                     .send({ status: false, message: "Enter Value in currencyId Field " })
             currencyId = currencyId.trim().toUpperCase()
 
-           
+
             if (currencyId != 'INR')
                 return res.status(400)
                     .send({ status: false, message: "currencyId invalid" })
@@ -356,7 +359,7 @@ const productUpdate = async function (req, res) {
                 return res.status(400)
                     .send({ status: false, message: "Enter Value in currencyFormat Field " })
 
-          
+
             if (currencyFormat != '₹')
                 return res.status(400)
                     .send({ status: false, message: "Please enter a valid currencyFormat" })
@@ -370,10 +373,10 @@ const productUpdate = async function (req, res) {
             if (!(isFreeShipping == "true" || isFreeShipping == "false"))
                 return res.status(400).send({ status: false, message: "Please enter a boolean value for isFreeShipping" })
         }
-       
 
 
-        if (productImage=='') {
+
+        if (productImage == '') {
             if (!productImage && files.length == 0) {
                 return res.status(400)
                     .send({ status: false, message: "Enter Value in productImage file " })
@@ -408,14 +411,14 @@ const productUpdate = async function (req, res) {
         if (availableSizes) {
 
             let sizeList = availableSizes.toUpperCase().split(",").map(x => x.trim());
-          
+
             for (let i = 0; i < sizeList.length; i++) {
                 if (!["S", "XS", "M", "X", "L", "XXL", "XL"].includes(sizeList[i]))
 
                     return res.status(400).send({ status: false, message: "Please Enter valid sizes, it should include only sizes from  (S,XS,M,X,L,XXL,XL) " })
             }
             updateData.availableSizes = sizeList
-            
+
 
         }
         if (Object.keys(updateData).some(a => a === "installments")) {
@@ -425,7 +428,7 @@ const productUpdate = async function (req, res) {
             if (!(/^[0-9]+$/.test(installments)))
                 return res.status(400)
                     .send({ status: false, message: "Invalid value for installments" })
-           
+
         }
 
         let findProduct = await productModel.findById(productId)
@@ -440,7 +443,7 @@ const productUpdate = async function (req, res) {
                 .send({ status: false, message: "This Product is Deleted" })
 
         let updatedProduct = await productModel.findByIdAndUpdate({ _id: productId }, { $set: updateData }, { new: true })
-        return res.status(200).send({ status: true, message: "Success",data: updatedProduct })
+        return res.status(200).send({ status: true, message: "Success", data: updatedProduct })
     }
     catch (err) {
 
@@ -455,13 +458,13 @@ const deleteProductById = async function (req, res) {
         let productId = req.params.productId
 
         if (!isValidObjectId(productId))
-        return res.status(400)
-            .send({ status: false, message: "ProductId is  Invalid" })
+            return res.status(400)
+                .send({ status: false, message: "ProductId is  Invalid" })
 
         let product = await productModel.findOne({ _id: productId })
 
-        if(product.isDeleted==true)
-        return res.status(400).send({ status: true, message: "Product is already deleted" })
+        if (product.isDeleted == true)
+            return res.status(400).send({ status: true, message: "Product is already deleted" })
 
         if (!product)
             return res.status(404)
