@@ -207,14 +207,14 @@ const getProductDetails = async function (req, res) {
                         return res.status(400).send({ status: false, message: "priceGreaterThan should be valid" });
 
                     priceGreaterThan = Number(priceGreaterThan)
-                    filter.price.$gte = priceGreaterThan;
+                    filter.price.$gt = priceGreaterThan;
                 }
                 if (priceLessThan) {
                     if (!isValidPrice(priceLessThan))
                         return res.status(400).send({ status: false, message: "priceLessThan should be valid" });
 
                     priceLessThan = Number(priceLessThan)
-                    filter.price.$lte = priceLessThan;
+                    filter.price.$lt = priceLessThan;
                 }
             }
 
